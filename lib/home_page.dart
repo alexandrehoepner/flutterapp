@@ -86,11 +86,11 @@ class _HomePageState extends State<HomePage> {
       if(resposta.statusCode == 200 && jsonObject['characters']['error'] == null ){
         PersonagemModel model = PersonagemModel.fromJson(jsonDecode(resposta.body));
         modelos.add(model);
+      }else{
+        PersonagemModel model = PersonagemModel.fromJson(jsonDecode(resposta.body));
+        model.characters.data.name = nomes[i];
+        modelos.add(model);
       }
-    }
-
-    for(int i = 0; i<modelos.length;i++){
-      print(modelos[i].characters.data.name);
     }
     return modelos;
   }

@@ -20,21 +20,18 @@ class PersonagemItem extends StatelessWidget {
         color: Colors.deepOrangeAccent,
         child: Row(
           children: [
-            FadeInImage(
-              placeholder: NetworkImage(
-                  "https://media.tenor.com/images/67d17766117cca8152040f688609472b/tenor.gif"),
+            Image(
               width: 100,
-              image: NetworkImage(
-                  "https://www.tibiawiki.com.br/images/7/76/Tibia_icon.png"),
+              image: nivel != 'null' ?  AssetImage('assets/imgs/live_human.png') : AssetImage('assets/imgs/dead_human.png'),
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(nome!=null?nome:'Default Value', style: TextStyle(fontSize: 20),),
-                Text(sexo!=null?sexo:'Default Value', style: TextStyle(fontSize: 20),),
-                Text(nivel!=null?nivel:'Default Value', style: TextStyle(fontSize: 20),),
-                Text(vocacao!=null?vocacao:'Default Value', style: TextStyle(fontSize: 20),),
+                Text(nome, style: TextStyle(fontSize: 20),),
+                Text(sexo!=null?sexo:'Não Encontrado', style: TextStyle(fontSize: 20),),
+                Text(nivel!= 'null' ?nivel:'Não Encontrado', style: TextStyle(fontSize: 20),),
+                Text(vocacao!=null?vocacao:'Não Encontrado', style: TextStyle(fontSize: 20),),
               ],
             )
           ],
