@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Personagem extends StatelessWidget {
+class PersonagemItem extends StatelessWidget {
 
   var nome;
   var sexo;
   var nivel;
   var vocacao;
 
-  Personagem(this.nome, this.sexo, this.nivel, this.vocacao);
+  PersonagemItem(this.nome, this.sexo, this.nivel, this.vocacao);
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +31,10 @@ class Personagem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(nome, style: TextStyle(fontSize: 20),),
-                Text(sexo, style: TextStyle(fontSize: 20),),
-                Text(nivel, style: TextStyle(fontSize: 20),),
-                Text(vocacao, style: TextStyle(fontSize: 20),),
+                Text(nome!=null?nome:'Default Value', style: TextStyle(fontSize: 20),),
+                Text(sexo!=null?sexo:'Default Value', style: TextStyle(fontSize: 20),),
+                Text(nivel!=null?nivel:'Default Value', style: TextStyle(fontSize: 20),),
+                Text(vocacao!=null?vocacao:'Default Value', style: TextStyle(fontSize: 20),),
               ],
             )
           ],

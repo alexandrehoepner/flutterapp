@@ -21,9 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  json_serializable:
-  json_annotation:
   http:
+  sqflite:
+  path:
   flutter:
     sdk: flutter
 
