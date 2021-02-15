@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tibia_client/PersonagemItem.dart';
 import 'package:tibia_client/database_helper.dart';
 import 'package:tibia_client/model/Personagem.dart';
 
@@ -33,19 +32,67 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(
         itemCount: personagensBuscados?.length ?? 0,
         itemBuilder: (context, index) {
-          return PersonagemItem(personagensBuscados[index].characters.data.name, personagensBuscados[index].characters.data.sex, personagensBuscados[index].characters.data.level.toString(), personagensBuscados[index].characters.data.vocation);
+          return Container(
+            margin: EdgeInsets.all(5),
+            child: Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.deepOrangeAccent,
+              child: Row(
+                children: [
+                  Image(
+                    width: 100,
+                    image: personagensBuscados[index].characters.data.level != null
+                        ? AssetImage('assets/imgs/live_human.png')
+                        : AssetImage('assets/imgs/dead_human.png'),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        personagensBuscados[index].characters.data.name,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        personagensBuscados[index].characters.data.sex != null ? personagensBuscados[index].characters.data.sex : 'Não Encontrado',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        personagensBuscados[index].characters.data.level != null ? personagensBuscados[index].characters.data.level.toString() : 'Não Encontrado',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        personagensBuscados[index].characters.data.vocation != null ? personagensBuscados[index].characters.data.vocation : 'Não Encontrado',
+                        style: TextStyle(fontSize: 20),
+                      )
+                    ],
+                  ),Spacer(),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [IconButton(icon: Icon(Icons.edit), onPressed: (){
+                      abrirPersonagemDetalhes(personagensBuscados[index].characters.data.name);
+                    })],
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [IconButton(icon: Icon(Icons.delete), onPressed:(){
+                      excluir(personagensBuscados[index].characters.data.name);
+                    })],
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         tooltip: 'Adicionar Personagem Buscar Dados',
         onPressed: () async {
-          bool resp = await Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => PersonagemDetalhes()));
-
-          if (resp == true) {
-            updateView();
-          }
+          abrirPersonagemDetalhes("");
         },
       ),
     );
@@ -88,11 +135,26 @@ class _HomePageState extends State<HomePage> {
         modelos.add(model);
       }else{
         PersonagemModel model = PersonagemModel.fromJson(jsonDecode(resposta.body));
-        model.characters.data.name = nomes[i];
+        model.characters.data.name = nomes[i].replaceAll(RegExp(r'[+]'), ' ');
         modelos.add(model);
       }
     }
     return modelos;
   }
+
+  void excluir(String nome){
+      db.excluir(nome).then((value) => updateView());
+  }
+
+  void abrirPersonagemDetalhes(String name) async{
+    bool resp = await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => PersonagemDetalhes(name)));
+
+    if (resp == true) {
+      updateView();
+    }
+
+  }
+
 
 }

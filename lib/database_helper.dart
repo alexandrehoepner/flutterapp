@@ -26,6 +26,29 @@ class DatabaseHelper {
     return db.insert(this.TABLE, p.toMap());
   }
 
+  Future<Personagem> buscarPorNome(String nome) async {
+    Database db = await this.abrirConexao();
+    List<Map> result = await db.rawQuery('SELECT * FROM '+TABLE+' WHERE nome=?', [nome]);
+    return Personagem.fromMap(result[0]);
+  }
+
+  Future<Personagem> excluir(String nome) async {
+    Database db = await this.abrirConexao();
+    List<Map> result = await db.rawQuery('SELECT * FROM '+TABLE+' WHERE nome=?', [nome]);
+    Personagem personagem =  Personagem.fromMap(result[0]);
+    db.delete(TABLE, where: 'nome = ?', whereArgs: [personagem.nome]);
+    return personagem;
+  }
+
+  Future<Personagem>alterar(String nomeAntigo, String novoNome) async {
+    Database db = await this.abrirConexao();
+    List<Map> result = await db.rawQuery('SELECT * FROM '+TABLE+' WHERE nome=?', [nomeAntigo]);
+    Personagem personagem =  Personagem.fromMap(result[0]);
+    personagem.nome = novoNome;
+    db.update(TABLE,personagem.toMap(), where: 'nome = ?', whereArgs: [nomeAntigo]);
+    return personagem;
+  }
+
   Future<List<Personagem>> listar() async {
     Database db = await this.abrirConexao();
     List<Map<String, dynamic>> personagens = await db.query(this.TABLE);
